@@ -1,0 +1,123 @@
+= sfFileTrunk plugin =
+
+The `sfFileTrunkPlugin` provides a central point for file uploads and handling.
+Not only does it take care of all of your file uploads but also for content delivery easily implemented
+using partials and components.
+
+== Installation ==
+
+This plugin requires sfThumbnailPlugin.
+If you want to make use of the components and actions of this plugin don't forget to enable the sfFileTrunk module in your application settings.yml
+
+== Contents ==
+
+This plugin contains several classes for easy file upload and devlivery.
+
+=== Creating a file upload using sfFileTrunkPlugin ===
+
+In order to make use of the plugin's functionalities all you basically need to do is to create
+a file input widget in your form and pass the sfValidatedFileTrunk class to the sfValidatorFile.
+
+See for example following form:
+{{{
+class TestForm extends BaseForm
+{
+	public function configure()
+	{
+		$this->setWidget('file', new sfWidgetFormInputFile());
+		$this->setValidator('file', new sfValidatorFile(array(
+			'validated_file_class' => 'sfValidatedFileTrunk', 
+			'path' => FileTrunk::getPath()
+		)));
+		
+		$this->getWidgetSchema()->setNameFormat('test[%s]');
+	}
+}
+}}}
+
+It as easy as that. Your action to handle the form could look like the following:
+
+{{{
+	public function executeIndex(sfWebRequest $request)
+	{
+		$this->form = new TestForm();
+
+		if ($request->isMethod('post'))
+		{
+			$this->form->bind($request->getParameter('test'), $request->getFiles('test'));
+			 
+			if ($this->form->isValid())
+			{
+				$file = $this->form->getValue('file');
+				$file->save();
+			}
+		}
+	}
+}}}
+
+That's it. Everything else is already done in the background. The file is saved with a unique name and a reference is inserted in the database.
+
+This was just a very simple example. The real use of the plugin comes through if you combine it with your model.
+Take the following schema for example:
+
+{{{
+propel:
+  test_table:
+    id:
+    title:
+      type: varchar
+      size: 80
+      required: true
+    file_trunk_id:
+      type: integer
+      required: true
+      foreignTable: file_trunk
+      foreignReference: id
+}}}
+
+A reference to the file_trunk table is needed so that we can store the file_trunk_id in our table (this table could for example the images table for a gallery).
+Now all you need todo is to change the TestTable's form a little bit like this:
+
+{{{
+class TestTableForm extends BaseTestTableForm
+{
+	public function configure()
+	{
+		$this->setWidget('file_trunk_file', new sfWidgetFormInputFile());
+		$this->setValidator('file_trunk_file', new sfValidatorFile(array(
+			'validated_file_class' => 'sfValidatedFileTrunk', 
+			'path' => sfConfig::get('sf_upload_dir')
+		)));
+		
+		unset($this->widgetSchema['file_trunk_id']);
+		unset($this->validatorSchema['file_trunk_id']);
+	}
+
+	public function save($con = null)
+	{
+		
+		$file = $this->getValue('file_trunk_file');
+		$file->save();
+		$this->getObject()->setFileTrunkId($file->getFileTrunk()->getId());
+		return parent::save($con);
+	}
+
+}
+}}}
+
+And voila! You have now enabled file upload with reference to the file trunk in your model.
+
+=== Content delivery with sfFileTrunkPlugin ===
+To put out content is very easy. You can put out content with two components:
+
+{{{
+<?php include_component('sfFileTrunk', 'filetrunk_file', array('id' => 1)); ?>
+<hr/>
+<?php include_component('sfFileTrunk', 'filetrunk_image', array('id' => 1, 'width' => 100)); ?>
+}}}
+
+The filetrunk_image component supports thumbnailing of images. Minimum parameters to be passed so that it works is the width parameter.
+You can optionally add the height parameter. If you set width to 0 or leave them completely out the original image will be used.
+
+NOTE: When not in the dev environment new thumbnail generation is limited to a 30 minutes interval.
+That means if you already generated a thumbnail of 30x30 you will have to wait another 30 minutes before you can generate a thumbnail with 40x40.

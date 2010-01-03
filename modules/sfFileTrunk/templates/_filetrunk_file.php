@@ -1,0 +1,1 @@
+<?php echo link_to($file->getOriginalName(), '@sf_file_trunk?id='.$file->getId()); 

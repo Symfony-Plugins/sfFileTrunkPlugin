@@ -1,0 +1,24 @@
+propel:
+  _attributes: 
+    package: plugins.sfFileTrunkPlugin.lib.model
+  file_trunk:
+    id:
+    original_name:
+      type: varchar
+      size: 255
+      required: true
+    actual_name:
+      type: varchar
+      size: 255
+      required: true
+    mime_type:
+      type: varchar
+      size: 255
+      required: true
+    size:
+      type: integer
+    created_at:
+    _propel_behaviors:
+      symfony:
+        form: false
+        filter: false 
