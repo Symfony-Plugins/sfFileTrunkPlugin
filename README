@@ -83,23 +83,23 @@ class TestTableForm extends BaseTestTableForm
 {
 	public function configure()
 	{
-		$this->setWidget('file_trunk_file', new sfWidgetFormInputFile());
-		$this->setValidator('file_trunk_file', new sfValidatorFile(array(
+		// upate the file_trunk_id field to support uploading of files
+		$this->setWidget('file_trunk_id', new sfWidgetFormInputFile());
+		$this->setValidator('file_trunk_id', new sfValidatorFile(array(
 			'validated_file_class' => 'sfValidatedFileTrunk', 
 			'path' => sfConfig::get('sf_upload_dir')
 		)));
-		
-		unset($this->widgetSchema['file_trunk_id']);
-		unset($this->validatorSchema['file_trunk_id']);
 	}
 
-	public function save($con = null)
+	// update the file_trunk_id column with the appropriate id value
+	public function updateFileTrunkIdColumn($value)
 	{
-		
-		$file = $this->getValue('file_trunk_file');
-		$file->save();
-		$this->getObject()->setFileTrunkId($file->getFileTrunk()->getId());
-		return parent::save($con);
+		if ($value)
+		{
+			$value->save();
+			return $value->getFileTrunk()->getId();
+		}
+		return false;
 	}
 
 }
@@ -117,7 +117,11 @@ To put out content is very easy. You can put out content with two components:
 }}}
 
 The filetrunk_image component supports thumbnailing of images. Minimum parameters to be passed so that it works is the width parameter.
-You can optionally add the height parameter. If you set width to 0 or leave them completely out the original image will be used.
+Since the plugin uses the sfImageTransformPlugin you may also provide the following paramters to the image component:
+
+height: the height of the image (default is the width supplied)
+method: method to be used in generating the thumbnail (see sfImageTransformPlugin for the thumbnail method parameters; default is 'fit')
+quality: the quality of the thumbnail (default is 75)
 
 NOTE: When not in the dev environment new thumbnail generation is limited to a 30 minutes interval.
 That means if you already generated a thumbnail of 30x30 you will have to wait another 30 minutes before you can generate a thumbnail with 40x40.
