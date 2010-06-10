@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0"
+	xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	packagerversion="1.6.1" version="2.0"
+	xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+	<name>sfFileTrunkPlugin</name>
+	<channel>pear.symfony-project.com</channel>
+	<summary>A plugin to provide a central access point for file uploads and easy controlable file access through routing</summary>
+	<description>The sfFileTrunkPlugin provides a central access point to all your uploaded files and files can be delivered easily through actions rather than exposing directly the file structure of your application. This enables you to keep better track of uploaded files and easier access to them.</description>
+	<lead>
+		<name>Khair-ed Din Mozzy Husseini</name>
+		<user>Mozzy</user>
+		<email>kmhusseini@gmail.com</email>
+		<active>yes</active>
+	</lead>
+	<date>2010-06-10</date>
+	<version>
+		<release>1.0.0</release>
+		<api>1.0.0</api>
+	</version>
+	<stability>
+		<release>stable</release>
+		<api>stable</api>
+	</stability>
+	<license uri="http://www.symfony-project.org/license">MIT license</license>
+	<notes>First stable release</notes>
+	<contents>
+		<dir name="/">
+			<file md5sum="cc902f0bfee1aceb1d3d81c858f032d4" name="modules/sfFileTrunk/actions/actions.class.php"
+				role="data" />
+			<file md5sum="2624012b84c65e4d93bc0fcdd0fb76ff" name="modules/sfFileTrunk/actions/components.class.php"
+				role="data" />
+			<file md5sum="2e6abc82a2b69206c5f6af4215fe8f2b"
+				name="modules/sfFileTrunk/lib/BasesfFileTrunkActions.class.php"
+				role="data" />
+			<file md5sum="48a9782d4d3427301334c9778a976d8f"
+				name="modules/sfFileTrunk/templates/_filetrunk_image.php" role="data" />
+			<file md5sum="4e05524c5111d9dcb5652b8f52a19072" name="modules/sfFileTrunk/templates/_filetrunk_file.php"
+				role="data" />
+			<file md5sum="eacad44b5db66e9296ddcce09e02cfe7" name="lib/model/om/BaseFileTrunk.php"
+				role="data" />
+			<file md5sum="726dad509100e8030a7845fe64cfffdd" name="lib/model/om/BaseFileTrunkPeer.php"
+				role="data" />
+			<file md5sum="45f902a1cf9b0ec085283a4380b1de1c" name="lib/model/map/FileTrunkTableMap.php"
+				role="data" />
+			<file md5sum="fc2e3e369e01add3a8f8bbe55e48d3e8" name="lib/model/FileTrunkPeer.php"
+				role="data" />
+			<file md5sum="01c9dffc7953436076f3fe80f3142a13" name="lib/model/FileTrunk.php"
+				role="data" />
+			<file md5sum="5fb186431471a2866d9cab5c1c3dffab" name="lib/validator/sfValidatedFileTrunk.class.php"
+				role="data" />
+			<file md5sum="772d953a08f0a61a048957377b2747a0" name="lib/sfFileTrunkFileResponse.php"
+				role="data" />
+			<file md5sum="274226780d9f3f7056076a995ea28f20" name="lib/sfFileTrunkRouting.php"
+				role="data" />
+			<file md5sum="110f43fe51051c949aa501f0b02b5c26" name="config/config.php"
+				role="data" />
+			<file md5sum="f111bef87287c97ced4d2bdc4964d94c" name="config/schema.yml"
+				role="data" />
+			<file md5sum="a148630c5f2808a137f246ef64032378" name="README"
+				role="data" />
+			<file md5sum="38790e28f5a29a68277a984f9abb7a5f" name="LICENSE"
+				role="data" />
+		</dir>
+	</contents>
+	<dependencies>
+		<required>
+			<php>
+				<min>5.2.4</min>
+			</php>
+			<pearinstaller>
+				<min>1.4.1</min>
+			</pearinstaller>
+			<package>
+				<name>symfony</name>
+				<channel>pear.symfony-project.com</channel>
+				<min>1.3.0</min>
+				<max>1.4.0</max>
+				<exclude>1.3.0</exclude>
+			</package>
+			<package>
+				<name>sfImageTransformPlugin</name>
+				<channel>plugins.symfony-project.org</channel>
+				<min>1.3.5</min>
+				<max>1.4.5</max>
+			</package>
+		</required>
+	</dependencies>
+	<phprelease />
+	<changelog>
+		<release>
+			<date>2010-06-10</date>
+			<version>
+				<release>1.0.0</release>
+				<api>1.0.0</api>
+			</version>
+			<stability>
+				<release>stable</release>
+				<api>stable</api>
+			</stability>
+			<license uri="http://www.symfony-project.org/license">MIT license</license>
+			<notes>First stable release. Changed dependency to sfImageTransform plugin.</notes>
+		</release>
+		<release>
+			<date>2010-10-03</date>
+			<version>
+				<release>0.9.1</release>
+				<api>0.9.0</api>
+			</version>
+			<stability>
+				<release>beta</release>
+				<api>beta</api>
+			</stability>
+			<license uri="http://www.symfony-project.org/license">MIT license</license>
+			<notes>-</notes>
+		</release>
+	</changelog>
+</package>
