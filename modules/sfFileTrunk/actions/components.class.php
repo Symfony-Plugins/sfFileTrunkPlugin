@@ -24,5 +24,13 @@ class sfFileTrunkComponents extends sfComponents
 		{
 			$this->height = $this->width;
 		}
+		if (!$this->quality)
+		{
+			$this->quality = 75;
+		}
+		if (!$this->method)
+		{
+			$this->method = 'fit';
+		}
 	}
 }

@@ -49,6 +49,8 @@ abstract class BasesfFileTrunkActions extends sfActions
 		// Get the requested width and height parameters
 		$width = $request->getParameter('width', 0);
 		$height = $request->getParameter('height', 0);
+		$method = $request->getParameter('method', 'fit');
+		$quality = $request->getParameter('quality', 75);
 		
 		// if only a width was specified then we will set the height equal to the width
 		if ($width && !$height)
@@ -61,7 +63,7 @@ abstract class BasesfFileTrunkActions extends sfActions
 		// else we just put out the original image
 		if ($width && $height)
 		{
-			$file_response = sfFileTrunkFileResponse::createFromFileTrunkForThumbnail($this->file_trunk, $width, $height);	
+			$file_response = sfFileTrunkFileResponse::createFromFileTrunkForThumbnail($this->file_trunk, $width, $height, $method, null, $quality);	
 		}
 		else
 		{

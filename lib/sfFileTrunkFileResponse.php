@@ -69,14 +69,14 @@ class sfFileTrunkFileResponse
 	 * @param FileTrunk $file The FileTrunk object to create the response for
 	 * @param int $width max width of thumbnail
 	 * @param int $height max height of thumbnail
-	 * @param boolean $scale (optional) if true image scales
-	 * @param boolean $inflate (optional) if true inflate small images
+	 * @param string $method (optional)
+	 * @param mixed $background (optional)
 	 * @param int $quality (optional) sets the quality of the thumbnail
 	 * @return sfFileTrunkFileResponse
 	 */
-	public static function createFromFileTrunkForThumbnail(FileTrunk $file, $width, $height, $scale = true, $inflate = true, $quality = 75)
+	public static function createFromFileTrunkForThumbnail(FileTrunk $file, $width, $height, $method='fit', $background=null, $quality = 75)
 	{
-		$filename = $file->generateThumbnail($width, $height, $scale, $inflate, $quality);
+		$filename = $file->generateThumbnail($width, $height, $method, $background, $quality);
 		$type = $file->getMimeType();
 		return new sfFileTrunkFileResponse($filename, $file->getOriginalName(), $file->getMimeType());
 	}

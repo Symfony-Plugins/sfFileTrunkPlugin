@@ -6,7 +6,7 @@ using partials and components.
 
 == Installation ==
 
-This plugin requires sfThumbnailPlugin.
+This plugin requires sfImageTransformPlugin.
 If you want to make use of the components and actions of this plugin don't forget to enable the sfFileTrunk module in your application settings.yml
 
 == Contents ==

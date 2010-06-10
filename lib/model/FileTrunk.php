@@ -37,14 +37,16 @@ class FileTrunk extends BaseFileTrunk {
 	 * 
 	 * @param int $width
 	 * @param int $height
+	 * @param string $method
 	 * @return string
 	 */
-	protected function generateThumbnailName($width, $height)
+	protected function generateThumbnailName($width, $height, $method = 'fit')
 	{
 		// prepare regular expression to construct a thumbnail filename
-		// {actualname}-{width}x{height}.{extension}
-		$thumb_regexp = '/([^.]*)(.*)/';
-		$thumb_replace = sprintf('$1-%dx%d$2', $width, $height);
+		// {actualname}-{width}x{height}.{method}.{extension}
+		$thumb_regexp = '/([^.]*)\.(.*)?/';
+		$thumb_replace = sprintf('$1-%dx%d-%s.$2', $width, $height, $method);
+		
 		return preg_replace($thumb_regexp, $thumb_replace, $this->getActualName());
 	}
 	
@@ -68,13 +70,13 @@ class FileTrunk extends BaseFileTrunk {
 	 * 
 	 * @param int $width max width of thumbnail
 	 * @param int $height max height of thumbnail
-	 * @param boolean $scale (optional) if true image scales
-	 * @param boolean $inflate (optional) if true inflate small images
+	 * @param string $method (optional)
+	 * @param mixed $background (optional)
 	 * @param int $quality (optional) sets the quality of the thumbnail
 	 * 
 	 * @return string Returns the path of the generated thumbnail
 	 */
-	public function generateThumbnail($width, $height, $scale = true, $inflate = true, $quality = 75)
+	public function generateThumbnail($width, $height, $method='fit', $background=null, $quality = 75)
 	{
 		// Let's first see if the mime-type is an image mime-type
 		// If the mime-type is not supported we will throw an exception 
@@ -92,7 +94,7 @@ class FileTrunk extends BaseFileTrunk {
 			$filename = self::getPath().DIRECTORY_SEPARATOR.$this->getActualName();
 			
 			// get our thumbnail file name with path 	
-			$thumb_filename = self::getPath().DIRECTORY_SEPARATOR.$this->generateThumbnailName($width, $height);
+			$thumb_filename = self::getPath().DIRECTORY_SEPARATOR.$this->generateThumbnailName($width, $height, $method);
 			
 			// Let us check first if the thumbnail already exists
 			// If it doesn't exist then we will generate and save it
@@ -117,9 +119,14 @@ class FileTrunk extends BaseFileTrunk {
 				}
 				
 				// now we will create the thumbnail from our original file and save it
-				$thumb = new sfThumbnail($width, $height, $scale, $inflate, $quality);
+				$img = new sfImage($filename, $this->getMimeType());
+				$img->thumbnail($width, $height, $method, $background);
+				$img->setQuality($quality);
+				$img->saveAs($thumb_filename);
+				
+				/*$thumb = new sfThumbnail($width, $height, $scale, $inflate, $quality);
 				$thumb->loadFile($filename);
-				$thumb->save($thumb_filename);
+				$thumb->save($thumb_filename);*/
 			}
 			
 			// At last we return the thumbnail filepath

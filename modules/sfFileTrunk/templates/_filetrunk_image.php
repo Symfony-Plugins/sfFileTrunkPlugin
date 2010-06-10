@@ -1,1 +1,1 @@
-<?php echo image_tag(url_for('@sf_file_trunk_image?id='.$file->getId().'&width='.$width.'&height='.$height), array('raw_name' => true, 'title' => $file->getOriginalName()));
+<?php echo image_tag(url_for('@sf_file_trunk_image?id='.$file->getId().'&width='.$width.'&height='.$height.'&method='.$method.'&quality='.$quality), array('raw_name' => true, 'title' => $file->getOriginalName()));
